@@ -47,5 +47,13 @@
     "components"
   ],
   "author": "Fi1osof",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prisma-cms/resource.git"
+  },
+  "bugs": {
+    "url": "https://github.com/prisma-cms/resource/issues"
+  },
+  "homepage": "https://github.com/prisma-cms/resource#readme"
 }

@@ -4,9 +4,7 @@ import PropTypes from 'prop-types'
 
 import gql from "graphql-tag";
 
-import {
-  Context,
-} from "../../App";
+import Context from '@prisma-cms/context';
 
 export default class SubscriptionProvider extends Component {
 
@@ -52,9 +50,9 @@ export default class SubscriptionProvider extends Component {
     } = this.state;
 
 
-    const subscribeUser = gql`
-      subscription user{
-        user{
+    const subscribeResource = gql`
+      subscription resource{
+        resource{
           mutation
           node{
             id
@@ -63,9 +61,9 @@ export default class SubscriptionProvider extends Component {
       }
     `;
 
-    const userSub = await client
+    const resourceSub = await client
       .subscribe({
-        query: subscribeUser,
+        query: subscribeResource,
         variables: {
         },
       })
@@ -81,7 +79,7 @@ export default class SubscriptionProvider extends Component {
       });
 
 
-    subscriptions.push(userSub);
+    subscriptions.push(resourceSub);
 
     this.setState({
       subscriptions,
@@ -137,7 +135,7 @@ export default class SubscriptionProvider extends Component {
 
     const {
       children,
-      user,
+      resource,
       client,
       loadApiData,
       ...other

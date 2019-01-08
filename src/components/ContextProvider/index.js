@@ -3,10 +3,7 @@ import React, {
   Component,
 } from 'react';
 
-
-import {
-  Context,
-} from "../../App";
+import Context from '@prisma-cms/context';
 
 
 class ContextProvider extends Component {
@@ -65,6 +62,7 @@ class ContextProvider extends Component {
     }
   }
 
+
   prepareResourceQuery() {
 
 
@@ -83,7 +81,7 @@ class ContextProvider extends Component {
       fragment Resource on Resource {
         ...ResourceNoNesting
         CreatedBy {
-          ...UserNoNestingFragment
+          ...UserNoNesting
         }
       }
 
