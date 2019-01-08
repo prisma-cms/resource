@@ -58,7 +58,14 @@ class ContextProvider extends Component {
   }
 
 
-  prepareQuery() {
+  prepareQuery(){
+
+    return {
+      ...this.prepareResourceQuery(),
+    }
+  }
+
+  prepareResourceQuery() {
 
 
     const {
@@ -67,22 +74,35 @@ class ContextProvider extends Component {
 
 
     const {
+      ResourceNoNestingFragment,
       UserNoNestingFragment,
     } = queryFragments;
+    
+    
+    const ResourceFragment = `
+      fragment Resource on Resource {
+        ...ResourceNoNesting
+        CreatedBy {
+          ...UserNoNestingFragment
+        }
+      }
+
+      ${ResourceNoNestingFragment}
+      ${UserNoNestingFragment}
+    `;
 
 
-
-    const usersConnection = `
-      query usersConnection (
-        $where: UserWhereInput
-        $orderBy: UserOrderByInput
+    const resourcesConnection = `
+      query resourcesConnection (
+        $where: ResourceWhereInput
+        $orderBy: ResourceOrderByInput
         $skip: Int
         $after: String
         $before: String
         $first: Int
         $last: Int
       ){
-        objectsConnection: usersConnection (
+        objectsConnection: resourcesConnection (
           where: $where
           orderBy: $orderBy
           skip: $skip
@@ -96,27 +116,27 @@ class ContextProvider extends Component {
           }
           edges{
             node{
-              ...UserNoNesting
+              ...Resource
             }
           }
         }
       }
 
-      ${UserNoNestingFragment}
+      ${ResourceFragment}
     `;
 
 
-    const users = `
-      query users (
-        $where: UserWhereInput
-        $orderBy: UserOrderByInput
+    const resources = `
+      query resources (
+        $where: ResourceWhereInput
+        $orderBy: ResourceOrderByInput
         $skip: Int
         $after: String
         $before: String
         $first: Int
         $last: Int
       ){
-        objects: users (
+        objects: resources (
           where: $where
           orderBy: $orderBy
           skip: $skip
@@ -125,34 +145,34 @@ class ContextProvider extends Component {
           first: $first
           last: $last
         ){
-          ...UserNoNesting
+          ...Resource
         }
       }
 
-      ${UserNoNestingFragment}
+      ${ResourceFragment}
     `;
 
 
-    const user = `
-      query user (
-        $where: UserWhereUniqueInput!
+    const resource = `
+      query resource (
+        $where: ResourceWhereUniqueInput!
       ){
-        object: users (
+        object: resources (
           where: $where
         ){
-          ...UserNoNesting
+          ...Resource
         }
       }
 
-      ${UserNoNestingFragment}
+      ${ResourceFragment}
     `;
 
 
-    const createUserProcessor = `
-      mutation createUserProcessor(
-        $data: UserCreateInput!
+    const createResourceProcessor = `
+      mutation createResourceProcessor(
+        $data: ResourceCreateInput!
       ) {
-        response: createUserProcessor(
+        response: createResourceProcessor(
           data: $data
         ){
           success
@@ -162,21 +182,21 @@ class ContextProvider extends Component {
             message
           }
           data{
-            ...UserNoNesting
+            ...Resource
           }
         }
       }
 
-      ${UserNoNestingFragment}
+      ${ResourceFragment}
     `;
 
 
-    const updateUserProcessor = `
-      mutation updateUserProcessor(
-        $data: UserUpdateInput!
-        $where: UserWhereUniqueInput!
+    const updateResourceProcessor = `
+      mutation updateResourceProcessor(
+        $data: ResourceUpdateInput!
+        $where: ResourceWhereUniqueInput!
       ) {
-        response: updateUserProcessor(
+        response: updateResourceProcessor(
           data: $data
           where: $where
         ){
@@ -187,22 +207,22 @@ class ContextProvider extends Component {
             message
           }
           data{
-            ...UserNoNesting
+            ...Resource
           }
         }
       }
 
-      ${UserNoNestingFragment}
+      ${ResourceFragment}
     `;
 
 
 
     return {
-      usersConnection,
-      users,
-      user,
-      createUserProcessor,
-      updateUserProcessor,
+      resourcesConnection,
+      resources,
+      resource,
+      createResourceProcessor,
+      updateResourceProcessor,
     }
 
   }
