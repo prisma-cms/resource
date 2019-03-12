@@ -155,7 +155,7 @@ class ContextProvider extends Component {
       query resource (
         $where: ResourceWhereUniqueInput!
       ){
-        object: resources (
+        object: resource (
           where: $where
         ){
           ...Resource
