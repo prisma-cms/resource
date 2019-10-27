@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 
 import gql from "graphql-tag";
 
@@ -37,7 +36,7 @@ export default class SubscriptionProvider extends Component {
     } = this.context;
 
 
-    if(!client){
+    if (!client) {
       console.error("client is empty");
       return;
     }
@@ -102,6 +101,7 @@ export default class SubscriptionProvider extends Component {
 
         subscriptions.map(n => {
           n.unsubscribe();
+          return null;
         });
 
         Object.assign(this.state, {
@@ -121,12 +121,24 @@ export default class SubscriptionProvider extends Component {
 
     const {
       client,
-      loadApiData,
+      // loadApiData,
     } = this.context;
 
-    await loadApiData();
+    // await loadApiData();
 
-    await client.reFetchObservableQueries();
+    // await client.reFetchObservableQueries();
+
+
+    if (!client.queryManager.fetchQueryRejectFns.size) {
+
+      // console.log("client", client);
+
+      return await client.resetStore()
+        .catch(error => {
+          console.error(error);
+        });
+
+    }
 
   }
 
